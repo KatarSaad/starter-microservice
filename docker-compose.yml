@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  # NestJS Microservice
+  nestjs-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs-service
+    ports:
+      - '1000:1000' # Application port
+    environment:
+      - PORT=1000
+      - NODE_ENV=production
+      - DATABASE_URL=mysql://root:saad123@mysql:3306/starter # Updated to mysql service name
+      - CACHE_ENABLED=true
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=my-password
+      - CACHE_DEFAULT_TTL=300
+      - RMQ_ENABLED=true
+      - RMQ_QUEUE_NAME=default_queue
+      - RMQ_RETRY_DELAY=5000 # Retry delay in milliseconds
+      - LOGGER_QUEUE=logging_queue
+      - RMQ_URL=amqp://rabbitmq:5672
+      - RMQ_CONNECTION_TIMEOUT=10000
+      - CURRENT_QUEUE=CURRENT_QUEUE
+      - SERVICE_NAME=SERVICE_NAME
+    depends_on:
+      - prometheus
+      - jaeger
+      - mysql
+    networks:
+      - app-network
+    #command: /wait-for-it.sh mysql:3306 --timeout=60 --strict -- npx prisma db push && npm run start:prod
+
+  # Prometheus Service
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Mount Prometheus config
+    ports:
+      - '9090:9090' # Prometheus UI
+    networks:
+      - app-network
+
+  # Grafana Service
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+    ports:
+      - '3000:3000' # Grafana UI
+    depends_on:
+      - prometheus
+    networks:
+      - app-network
+
+  # Jaeger Service
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - '5775:5775/udp' # Agent UDP
+      - '6831:6831/udp' # Agent UDP
+      - '6832:6832/udp' # Agent UDP
+      - '5778:5778' # Config Service
+      - '16686:16686' # Query Service UI
+      - '14268:14268' # Collector HTTP
+      - '14250:14250' # GRPC
+      - '9411:9411' # Zipkin Compatible
+    networks:
+      - app-network
+
+  # Redis Service (updated from localhost to redis)
+  rabbitmq:
+    image: 'rabbitmq:management'
+    container_name: 'rabbitmq'
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - app-network
+
+  redis:
+    image: 'redis:alpine'
+    container_name: redis
+    networks:
+      - app-network
+
+  # MySQL Service
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: saad123 # Set root password here
+      MYSQL_DATABASE: starter # Optionally set a default database
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - '3308:3306' # Change the host port to 3308, keeping the internal container port 3306
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'mysql'] # Updated to use mysql service name
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+  grafana-data:
+
+networks:
+  app-network:
+    driver: bridge

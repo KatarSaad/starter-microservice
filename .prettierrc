@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "printWidth": 170,
+  "trailingComma": "all",
+  "endOfLine": "auto",
+  "no-multiple-empty-lines": ["error", { "max": 1 }]
+}

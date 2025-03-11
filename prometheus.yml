@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s # How often to scrape metrics
+
+scrape_configs:
+  - job_name: 'nestjs-service'
+    static_configs:
+      - targets: ['nestjs-service:1000'] # Scrapes metrics from the NestJS service
