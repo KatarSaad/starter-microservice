@@ -12,8 +12,8 @@ COPY . .
 # Expose the service port
 
 # Wait for MySQL service to be ready (optional, you may need to add a custom script for this)
-RUN npx prisma generate
-RUN npx prisma db push
+# RUN npx prisma generate
+# RUN npx prisma db push
 RUN npm run build
 WORKDIR /app/dist
 EXPOSE 1000

@@ -32,7 +32,7 @@ services:
       - mysql
     networks:
       - app-network
-    #command: /wait-for-it.sh mysql:3306 --timeout=60 --strict -- npx prisma db push && npm run start:prod
+    command: /bin/sh -c "npx prisma generate && npx prisma db push && npm run start:prod"
 
   # Prometheus Service
   prometheus:
