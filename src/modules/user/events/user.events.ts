@@ -1,10 +1,10 @@
 import { Logger, Controller, UseInterceptors } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { UserService } from '../user.service';
-import { RmqLoggingInterceptor } from '@app/common/interceptors/logging.interceptor';
-import { CircuitBreakerService } from '@app/common/services/sercuit.breaker.service';
+import { RmqLoggingInterceptor } from '../../../common/interceptors/logging.interceptor';
+import { CircuitBreakerService } from '../../../common/services/sercuit.breaker.service';
 import { from } from 'rxjs';
-import { CustomRpcException } from 'src/modules/error handler/error.response';
+import { CustomRpcException } from '../../../modules/error handler/error.response';
 
 @UseInterceptors(RmqLoggingInterceptor) // Applies to all routes in this controller
 @Controller()

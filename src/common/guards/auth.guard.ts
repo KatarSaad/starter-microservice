@@ -1,7 +1,7 @@
 // src/auth/auth.guard.ts
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { AuthClientService } from '@app/common/services/auth.service';
+import { AuthClientService } from '../services/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

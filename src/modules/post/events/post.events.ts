@@ -1,5 +1,4 @@
-
-import { Injectable, Logger,Controller} from '@nestjs/common';
+import { Injectable, Logger, Controller } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { PostService } from '../post.service';
 

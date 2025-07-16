@@ -1,10 +1,10 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { BlogController } from './blog.controller';
-import { AppModule } from 'src/app.module';
-import { PrismaService } from 'prisma/prisma.service';
-import { LoggingService } from '@app/common/services/logging.service';
-import { RabbitmqService } from '@app/common/services/logger-rmq-service';
+import { AppModule } from '../../app.module';
+import { PrismaService } from '../../../prisma/prisma.service';
+import { LoggingService } from '../../common/services/logging.service';
+import { RabbitmqService } from '../../common/services/logger-rmq-service';
 import { BlogEventHandler } from './events/blog.events';
 
 @Module({

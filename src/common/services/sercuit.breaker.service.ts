@@ -49,33 +49,13 @@ export class CircuitBreakerService {
     this.circuitBreaker = new CircuitBreaker(breakerFunction, options);
 
     // Log various circuit breaker events for visibility.
-    this.circuitBreaker.on('open', () =>
-      this.logger.warn('⚠️ Circuit Breaker OPEN - Blocking requests'),
-    );
-    this.circuitBreaker.on('halfOpen', () =>
-      this.logger.warn('🔄 Circuit Breaker HALF-OPEN - Testing...'),
-    );
-    this.circuitBreaker.on('close', () =>
-      this.logger.log('✅ Circuit Breaker CLOSED - Normal operation resumed'),
-    );
-    this.circuitBreaker.on('timeout', (err, latency) =>
-      this.logger.error(
-        `⏱ Circuit timed out after ${latency}ms: ${err.message}`,
-      ),
-    );
-    this.circuitBreaker.on('reject', (err) =>
-      this.logger.error(`🚫 Request rejected: ${err.message}`),
-    );
-    this.circuitBreaker.on('fallback', (result, err) =>
-      this.logger.warn(
-        `🤝 Fallback executed with result: ${result}. Error: ${err?.message}`,
-      ),
-    );
-    this.circuitBreaker.on('success', (result) =>
-      this.logger.log(
-        `✅ Circuit executed successfully with result: ${result}`,
-      ),
-    );
+    this.circuitBreaker.on('open', () => this.logger.warn('⚠️ Circuit Breaker OPEN - Blocking requests'));
+    this.circuitBreaker.on('halfOpen', () => this.logger.warn('🔄 Circuit Breaker HALF-OPEN - Testing...'));
+    this.circuitBreaker.on('close', () => this.logger.log('✅ Circuit Breaker CLOSED - Normal operation resumed'));
+    this.circuitBreaker.on('timeout', (err, latency) => this.logger.error(`⏱ Circuit timed out after ${latency}ms: ${err.message}`));
+    this.circuitBreaker.on('reject', (err) => this.logger.error(`🚫 Request rejected: ${err.message}`));
+    this.circuitBreaker.on('fallback', (result, err) => this.logger.warn(`🤝 Fallback executed with result: ${result}. Error: ${err?.message}`));
+    this.circuitBreaker.on('success', (result) => this.logger.log(`✅ Circuit executed successfully with result: ${result}`));
   }
 
   /**

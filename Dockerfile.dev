@@ -1,0 +1,27 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+
+# Install NestJS CLI and tsconfig-paths globally
+RUN npm install -g @nestjs/cli tsconfig-paths
+
+# Copy source code
+COPY . .
+
+# Copy Prisma schema
+COPY prisma ./prisma
+
+# Generate Prisma client
+RUN npx prisma generate
+
+# Expose port
+EXPOSE 1000
+
+# Use nodemon for development with hot reloading
+CMD ["npm", "run", "start:dev"] 

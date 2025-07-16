@@ -22,7 +22,8 @@ services:
       - RMQ_QUEUE_NAME=default_queue
       - RMQ_RETRY_DELAY=5000 # Retry delay in milliseconds
       - LOGGER_QUEUE=logging_queue
-      - RMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - QUEUE_DURABLE=false
       - RMQ_CONNECTION_TIMEOUT=10000
       - CURRENT_QUEUE=CURRENT_QUEUE
       - SERVICE_NAME=SERVICE_NAME
@@ -30,10 +31,10 @@ services:
       - prometheus
       - jaeger
       - mysql
+      - rabbitmq
+      - redis
     networks:
       - app-network
-    command: /bin/sh -c "npx prisma generate && npx prisma db push && npm run start:prod"
-
   # Prometheus Service
   prometheus:
     image: prom/prometheus:latest
@@ -81,6 +82,9 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+    environment:
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit mq_frame_max 8192
+
     networks:
       - app-network
 

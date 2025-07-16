@@ -22,15 +22,19 @@ export class RabbitmqService implements OnModuleInit, OnModuleDestroy {
    */
   private initializeRabbitMQClient() {
     try {
-      const rmqUrl = this.configService.get<string>('rmq.url', 'amqp://localhost:5672');
-      const rmqLoggerQueue = this.configService.get<string>('rmq.LOGGER_QUEUE', 'default_queue');
+      const rmqUrl = this.configService.get<string>('rmq.url', 'amqp://rabbitmq:5672');
+      const rmqLoggerQueue = this.configService.get<string>('rmq.LOGGER_QUEUE', 'logging_queue');
+      const queueDurable = this.configService.get<string>('QUEUE_DURABLE') === 'true';
 
       this.client = ClientProxyFactory.create({
         transport: Transport.RMQ,
         options: {
           urls: [rmqUrl],
           queue: rmqLoggerQueue,
-          queueOptions: { durable: true },
+          queueOptions: { durable: queueDurable },
+          socketOptions: {
+            frameMax: 8192,
+          },
         },
       });
 

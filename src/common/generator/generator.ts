@@ -210,7 +210,7 @@ export class ${capitalize(moduleName)}EventHandler {
 const generateService = (moduleName: string, modulePath: string) => {
   const serviceContent = `
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'prisma/prisma.service';
+import { PrismaService } from '../../../prisma/prisma.service';
 import { Create${capitalize(moduleName)}Dto } from './dto/create-${moduleName}.dto';
 import { Update${capitalize(moduleName)}Dto } from './dto/update-${moduleName}.dto';
 import { ${capitalize(moduleName)}ResponseDto } from './response/${moduleName}-response.dto';

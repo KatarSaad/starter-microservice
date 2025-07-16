@@ -1,4 +1,3 @@
-
 export enum BlogEventNames {
   Created = 'blog.created',
   Updated = 'blog.updated',

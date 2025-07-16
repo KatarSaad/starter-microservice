@@ -1,4 +1,3 @@
-
 export enum UserEventNames {
   Created = 'user.created',
   Updated = 'user.updated',

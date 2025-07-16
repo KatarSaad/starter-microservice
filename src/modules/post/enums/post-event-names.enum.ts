@@ -1,4 +1,3 @@
-
 export enum PostEventNames {
   Created = 'post.created',
   Updated = 'post.updated',

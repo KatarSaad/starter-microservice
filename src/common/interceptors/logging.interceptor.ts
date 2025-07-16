@@ -1,8 +1,8 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { LoggingService } from '@app/common/services/logging.service';
+import { LoggingService } from '../services/logging.service';
 
 @Injectable()
 export class RmqLoggingInterceptor implements NestInterceptor {
